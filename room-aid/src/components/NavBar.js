@@ -11,8 +11,6 @@ const NavBar = () => {
             <a className = "link" href="/grocery">Grocery</a>
             <a className = "link" href="/calendar">Calendar</a>
         </div>
-        
-        
     </div>
   )
 }
