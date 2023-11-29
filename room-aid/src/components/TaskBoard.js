@@ -1,9 +1,14 @@
 import React from 'react'
+import {useEffect} from 'react'
 import "./TaskBoard.css"
 
 const TaskBoard = () => {
+
+  useEffect(() => loadTasks(), [])
+
   return (
     <div className="container">
+      <h1>Task Board</h1>
       <ul id="todoList"/>
       <div>
         <input type="text" id="taskInput" placeholder="New Task..."></input>
@@ -16,9 +21,6 @@ const TaskBoard = () => {
   )
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-  loadTasks();
-});
 
 function addTask() {
   const taskInput = document.getElementById('taskInput');
