@@ -1,7 +1,7 @@
 import './App.css';
 import NavBar from './components/NavBar';
-import {BrowserRouter as Router, Routes, Route} from "react-router-dom"
-import Calendar from './components/Calendar';
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
+import MyCalendar from './components/MyCalendar';
 import Grocery from './components/Grocery';
 import TaskBoard from './components/TaskBoard';
 
@@ -14,7 +14,7 @@ function App() {
           <Routes>
             <Route exact path="/" element = {<TaskBoard/>}/>
             <Route path="/grocery" element = {<Grocery/>}/>
-            <Route path="/calendar" element = {<Calendar/>}/>
+            <Route path="/calendar" element = {<MyCalendar/>}/>
           </Routes>
         </Router>
       </header>
