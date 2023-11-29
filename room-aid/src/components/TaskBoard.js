@@ -4,7 +4,6 @@ import "./TaskBoard.css"
 const TaskBoard = () => {
   return (
     <div className="container">
-      <h1>Task List</h1>
       <ul id="todoList"/>
       <div>
         <input type="text" id="taskInput" placeholder="New Task..."></input>
