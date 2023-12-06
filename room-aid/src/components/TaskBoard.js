@@ -5,6 +5,10 @@ import "./TaskBoard.css"
 const TaskBoard = () => {
 
   useEffect(() => loadTasks(), [])
+  useEffect(() => {
+    localStorage.removeItem('deletedTasks');
+    localStorage.removeItem('clearedTasks')
+  })
 
   return (
     <div className="container">
