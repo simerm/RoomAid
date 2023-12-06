@@ -16,6 +16,7 @@ const TaskBoard = () => {
         <input type="text" id="roomate" placeholder="Assigned roomate"></input>
         <button onClick={addTask}>Add Task</button>
         <button onClick={clearTasks}>Clear All</button>
+        <button onClick={undoDelete}>Undo Deletion</button>
       </div>
     </div>
   )
@@ -69,13 +70,36 @@ function editTask(index) {
 
 function deleteTask(index) {
   let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
-  tasks.splice(index, 1);
+  let deletedTasks = JSON.parse(localStorage.getItem('deletedTasks')) || [];
+
+  const deletedTask = tasks.splice(index, 1)[0];
+  deletedTasks.push(deletedTask);
+
   localStorage.setItem('tasks', JSON.stringify(tasks));
+  localStorage.setItem('deletedTasks', JSON.stringify(deletedTasks));
+  
   loadTasks();
+}
+
+function undoDelete(){
+  let deletedTasks = JSON.parse(localStorage.getItem('deletedTasks')) || [];
+  if (deletedTasks.length > 0){
+    let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+    const lastDeletedTask = deletedTasks.pop();
+    tasks.push(lastDeletedTask);
+
+    localStorage.setItem('tasks', JSON.stringify(tasks));
+    localStorage.setItem('deletedTasks', JSON.stringify(deletedTasks));
+
+    loadTasks();
+  } else {
+    alert("No task deletion to undo")
+  }
 }
 
 function clearTasks() {
   localStorage.removeItem('tasks');
+  localStorage.removeItem('deletedTasks')
   loadTasks();
 }
 

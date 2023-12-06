@@ -22,6 +22,7 @@ const Grocery = () => {
         id="QuantityInput" placeholder="Quantity..."/>
         <button onClick={addTask}>Add Item</button>
         <button onClick={clearTasks}>Clear All</button>
+        <button onClick={undoDelete}>Undo Deletion</button>
       </div>
     </div>
   )
@@ -68,13 +69,37 @@ function editGrocery(index) {
 
 function deleteTask(index) {
   let groceries = JSON.parse(localStorage.getItem('groceries')) || [];
-  groceries.splice(index, 1);
+  let deletedGroceries = JSON.parse(localStorage.getItem('deletedGroceries')) || [];
+
+
+  const deletedGrocery = groceries.splice(index, 1)[0];
+  deletedGroceries.push(deletedGrocery);
+
   localStorage.setItem('groceries', JSON.stringify(groceries));
+  localStorage.setItem('deletedGroceries', JSON.stringify(deletedGroceries));
+
   loadGroceries();
+}
+
+function undoDelete(){
+  let deletedGroceries = JSON.parse(localStorage.getItem('deletedGroceries')) || [];
+  if (deletedGroceries.length > 0){
+    let groceries = JSON.parse(localStorage.getItem('groceries')) || [];
+    const lastDeletedGrocery = deletedGroceries.pop();
+    groceries.push(lastDeletedGrocery);
+
+    localStorage.setItem('groceries', JSON.stringify(groceries));
+    localStorage.setItem('deletedGroceries', JSON.stringify(deletedGroceries));
+
+    loadGroceries();
+  } else {
+    alert("No task deletion to undo")
+  }
 }
 
 function clearTasks() {
   localStorage.removeItem('groceries');
+  localStorage.removeItem('deletedGroceries');
   loadGroceries();
 }
 
