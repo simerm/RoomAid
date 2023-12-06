@@ -83,23 +83,38 @@ function deleteTask(index) {
 
 function undoDelete(){
   let deletedGroceries = JSON.parse(localStorage.getItem('deletedGroceries')) || [];
+  let groceries = JSON.parse(localStorage.getItem('groceries')) || [];
+
   if (deletedGroceries.length > 0){
-    let groceries = JSON.parse(localStorage.getItem('groceries')) || [];
     const lastDeletedGrocery = deletedGroceries.pop();
     groceries.push(lastDeletedGrocery);
+  } else{
+    let clearedGroceries = JSON.parse(localStorage.getItem('clearedGroceries')) || [];
+    if (clearedGroceries.length > 0){
+      groceries = groceries.concat(clearedGroceries);
+      localStorage.removeItem('clearedGroceries');
+    } else {
+      alert("No grocery deletion to undo");
+      return;
+    }
+  }
 
     localStorage.setItem('groceries', JSON.stringify(groceries));
     localStorage.setItem('deletedGroceries', JSON.stringify(deletedGroceries));
 
     loadGroceries();
-  } else {
-    alert("No task deletion to undo")
-  }
 }
 
 function clearTasks() {
+  let groceries = JSON.parse(localStorage.getItem('groceries')) || [];
+  let clearedGroceries = JSON.parse(localStorage.getItem('clearedGroceries')) || [];
+
+  if(groceries.length > 0){
+    clearedGroceries = clearedGroceries.concat(groceries);
+    localStorage.setItem('clearedGroceries', JSON.stringify(clearedGroceries));
+  }
+
   localStorage.removeItem('groceries');
-  localStorage.removeItem('deletedGroceries');
   loadGroceries();
 }
 

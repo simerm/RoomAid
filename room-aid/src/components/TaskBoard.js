@@ -83,23 +83,40 @@ function deleteTask(index) {
 
 function undoDelete(){
   let deletedTasks = JSON.parse(localStorage.getItem('deletedTasks')) || [];
+  let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+
   if (deletedTasks.length > 0){
-    let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
     const lastDeletedTask = deletedTasks.pop();
     tasks.push(lastDeletedTask);
-
-    localStorage.setItem('tasks', JSON.stringify(tasks));
-    localStorage.setItem('deletedTasks', JSON.stringify(deletedTasks));
-
-    loadTasks();
   } else {
-    alert("No task deletion to undo")
-  }
+    let clearedTasks = JSON.parse(localStorage.getItem('clearedTasks')) || [];
+    if (clearedTasks.length > 0) {
+        tasks = tasks.concat(clearedTasks);
+        localStorage.removeItem('clearedTasks');
+    } else {
+        alert("No tasks to undo");
+        return;
+    }
+   }
+
+   localStorage.setItem('tasks', JSON.stringify(tasks));
+   localStorage.setItem('deletedTasks', JSON.stringify(deletedTasks));
+
+   loadTasks();
 }
 
 function clearTasks() {
+  let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+  let clearedTasks = JSON.parse(localStorage.getItem('clearedTasks')) || [];
+
+  if(tasks.length > 0){
+    //saves tasks before the clear
+    clearedTasks = clearedTasks.concat(tasks);
+    localStorage.setItem('clearedTasks', JSON.stringify(clearedTasks));
+  }
+
   localStorage.removeItem('tasks');
-  localStorage.removeItem('deletedTasks')
+  
   loadTasks();
 }
 
